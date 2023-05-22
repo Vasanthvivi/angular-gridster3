@@ -1,0 +1,49 @@
+{
+  "name": "angular-gridster3",
+  "version": "1.0.1",
+  "license": "ISC",
+  "sideEffects": false,
+  "dependencies": {
+    "tslib": "^2.4.0"
+  },
+  "peerDependencies": {
+    "@angular/common": "^16.0.0",
+    "@angular/core": "^16.0.0",
+    "rxjs": "^7.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/Vasanthvivi/angular-gridster3/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Vasanthvivi/angular-gridster3.git"
+  },
+  "description": "Angular gridster 3",
+  "keywords": [
+    "angular",
+    "angular2",
+    "typescript",
+    "dashboard",
+    "gridster",
+    "gridster2",
+    "resize",
+    "drag&drop",
+    "widgets"
+  ],
+  "authors": [
+    "Vasanth K"
+  ],
+  "module": "fesm2022/angular-gridster2.mjs",
+  "typings": "index.d.ts",
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./index.d.ts",
+      "esm2022": "./esm2022/angular-gridster2.mjs",
+      "esm": "./esm2022/angular-gridster2.mjs",
+      "default": "./fesm2022/angular-gridster2.mjs"
+    }
+  }
+}
