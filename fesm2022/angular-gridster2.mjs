@@ -729,14 +729,14 @@ class GridsterRenderer {
         else if (this.gridster.$options.gridType === GridType.Fixed) {
             this.gridster.curColWidth =
                 this.gridster.$options.fixedColWidth +
-                    (this.gridster.$options.ignoreMarginInRow
-                        ? 0
-                        : this.gridster.$options.margin);
+                (this.gridster.$options.ignoreMarginInRow
+                    ? 0
+                    : this.gridster.$options.margin);
             this.gridster.curRowHeight =
                 this.gridster.$options.fixedRowHeight +
-                    (this.gridster.$options.ignoreMarginInRow
-                        ? 0
-                        : this.gridster.$options.margin);
+                (this.gridster.$options.ignoreMarginInRow
+                    ? 0
+                    : this.gridster.$options.margin);
             addClass = GridType.Fixed;
             removeClass1 = GridType.Fit;
             removeClass2 = GridType.ScrollVertical;
@@ -745,9 +745,9 @@ class GridsterRenderer {
         else if (this.gridster.$options.gridType === GridType.VerticalFixed) {
             this.gridster.curRowHeight =
                 this.gridster.$options.fixedRowHeight +
-                    (this.gridster.$options.ignoreMarginInRow
-                        ? 0
-                        : this.gridster.$options.margin);
+                (this.gridster.$options.ignoreMarginInRow
+                    ? 0
+                    : this.gridster.$options.margin);
             addClass = GridType.ScrollVertical;
             removeClass1 = GridType.Fit;
             removeClass2 = GridType.ScrollHorizontal;
@@ -756,9 +756,9 @@ class GridsterRenderer {
         else if (this.gridster.$options.gridType === GridType.HorizontalFixed) {
             this.gridster.curColWidth =
                 this.gridster.$options.fixedColWidth +
-                    (this.gridster.$options.ignoreMarginInRow
-                        ? 0
-                        : this.gridster.$options.margin);
+                (this.gridster.$options.ignoreMarginInRow
+                    ? 0
+                    : this.gridster.$options.margin);
             addClass = GridType.ScrollHorizontal;
             removeClass1 = GridType.Fit;
             removeClass2 = GridType.ScrollVertical;
@@ -926,14 +926,18 @@ class GridsterPreviewComponent {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.0.0", ngImport: i0, type: GridsterPreviewComponent, deps: [{ token: i0.ElementRef }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.0.0", type: GridsterPreviewComponent, isStandalone: true, selector: "gridster-preview", inputs: { previewStyle$: "previewStyle$", gridRenderer: "gridRenderer" }, ngImport: i0, template: '', isInline: true, styles: ["gridster-preview{position:absolute;display:none;background:rgba(0,0,0,.15)}\n"], encapsulation: i0.ViewEncapsulation.None }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.0.0", ngImport: i0, type: GridsterPreviewComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'gridster-preview', template: '', encapsulation: ViewEncapsulation.None, standalone: true, styles: ["gridster-preview{position:absolute;display:none;background:rgba(0,0,0,.15)}\n"] }]
-        }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: i0.Renderer2 }]; }, propDecorators: { previewStyle$: [{
-                type: Input
-            }], gridRenderer: [{
-                type: Input
-            }] } });
+i0.ɵɵngDeclareClassMetadata({
+    minVersion: "12.0.0", version: "16.0.0", ngImport: i0, type: GridsterPreviewComponent, decorators: [{
+        type: Component,
+        args: [{ selector: 'gridster-preview', template: '', encapsulation: ViewEncapsulation.None, standalone: true, styles: ["gridster-preview{position:absolute;display:none;background:rgba(0,0,0,.15)}\n"] }]
+    }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: i0.Renderer2 }]; }, propDecorators: {
+        previewStyle$: [{
+            type: Input
+        }], gridRenderer: [{
+            type: Input
+        }]
+    }
+});
 
 class GridsterComponent {
     constructor(el, renderer, cdRef, zone) {
@@ -1078,9 +1082,9 @@ class GridsterComponent {
             .subscribe(() => this.calculateLayout());
         this.resize$
             .pipe(
-        // Cancel previously scheduled DOM timer if `calculateLayout()` has been called
-        // within this time range.
-        switchMap(() => timer(100)), takeUntil(this.destroy$))
+                // Cancel previously scheduled DOM timer if `calculateLayout()` has been called
+                // within this time range.
+                switchMap(() => timer(100)), takeUntil(this.destroy$))
             .subscribe(() => this.resize());
     }
     ngOnChanges(changes) {
@@ -1262,13 +1266,13 @@ class GridsterComponent {
             }
             this.curRowHeight =
                 ((this.curHeight - marginHeight) / this.rows) *
-                    this.$options.rowHeightRatio;
+                this.$options.rowHeightRatio;
         }
         else {
             this.curColWidth = (this.curWidth + this.$options.margin) / this.columns;
             this.curRowHeight =
                 ((this.curHeight + this.$options.margin) / this.rows) *
-                    this.$options.rowHeightRatio;
+                this.$options.rowHeightRatio;
             this.renderer.setStyle(this.el, 'padding-left', 0 + 'px');
             this.renderer.setStyle(this.el, 'padding-right', 0 + 'px');
             this.renderer.setStyle(this.el, 'padding-top', 0 + 'px');
@@ -1440,8 +1444,11 @@ class GridsterComponent {
             itemComponent.notPlaced = true;
             if (!this.$options.disableWarnings) {
                 console.warn("Can't be placed in the bounds of the dashboard!/n" +
-                    JSON.stringify(itemComponent.item, ['cols', 'rows', 'x', 'y']));
+                JSON.stringify(itemComponent.item, ['cols', 'rows', 'x', 'y']));
             }
+            this.gridster.gridRenderer.updateItem(this.el, this.$item, this.renderer);
+            this.updateItemSize();
+            this.calculateLayout();
         }
     }
     pixelsToPositionX(x, roundingMethod, noLimit) {
@@ -1528,24 +1535,38 @@ class GridsterComponent {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.0.0", ngImport: i0, type: GridsterComponent, deps: [{ token: ElementRef }, { token: Renderer2 }, { token: ChangeDetectorRef }, { token: NgZone }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.0.0", type: GridsterComponent, isStandalone: true, selector: "gridster", inputs: { options: "options" }, usesOnChanges: true, ngImport: i0, template: "<div\n  class=\"gridster-column\"\n  *ngFor=\"let column of gridColumns; let i = index;\"\n  [ngStyle]=\"gridRenderer.getGridColumnStyle(i)\"\n></div>\n<div\n  class=\"gridster-row\"\n  *ngFor=\"let row of gridRows; let i = index;\"\n  [ngStyle]=\"gridRenderer.getGridRowStyle(i)\"\n></div>\n<ng-content></ng-content>\n<gridster-preview\n  [gridRenderer]=\"gridRenderer\"\n  [previewStyle$]=\"previewStyle$\"\n  class=\"gridster-preview\"\n></gridster-preview>\n", styles: ["gridster{position:relative;box-sizing:border-box;background:grey;width:100%;height:100%;-webkit-user-select:none;user-select:none;display:block}gridster.fit{overflow-x:hidden;overflow-y:hidden}gridster.scrollVertical{overflow-x:hidden;overflow-y:auto}gridster.scrollHorizontal{overflow-x:auto;overflow-y:hidden}gridster.fixed{overflow:auto}gridster.mobile{overflow-x:hidden;overflow-y:auto}gridster.mobile gridster-item{position:relative}gridster.gridSize{height:initial;width:initial}gridster.gridSize.fit{height:100%;width:100%}gridster .gridster-column,gridster .gridster-row{position:absolute;display:none;transition:.3s;box-sizing:border-box}gridster.display-grid .gridster-column,gridster.display-grid .gridster-row{display:block}gridster .gridster-column{border-left:1px solid white;border-right:1px solid white}gridster .gridster-row{border-top:1px solid white;border-bottom:1px solid white}\n"], dependencies: [{ kind: "directive", type: NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "directive", type: NgStyle, selector: "[ngStyle]", inputs: ["ngStyle"] }, { kind: "component", type: GridsterPreviewComponent, selector: "gridster-preview", inputs: ["previewStyle$", "gridRenderer"] }], encapsulation: i0.ViewEncapsulation.None }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.0.0", ngImport: i0, type: GridsterComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'gridster', encapsulation: ViewEncapsulation.None, standalone: true, imports: [NgForOf, NgStyle, GridsterPreviewComponent], template: "<div\n  class=\"gridster-column\"\n  *ngFor=\"let column of gridColumns; let i = index;\"\n  [ngStyle]=\"gridRenderer.getGridColumnStyle(i)\"\n></div>\n<div\n  class=\"gridster-row\"\n  *ngFor=\"let row of gridRows; let i = index;\"\n  [ngStyle]=\"gridRenderer.getGridRowStyle(i)\"\n></div>\n<ng-content></ng-content>\n<gridster-preview\n  [gridRenderer]=\"gridRenderer\"\n  [previewStyle$]=\"previewStyle$\"\n  class=\"gridster-preview\"\n></gridster-preview>\n", styles: ["gridster{position:relative;box-sizing:border-box;background:grey;width:100%;height:100%;-webkit-user-select:none;user-select:none;display:block}gridster.fit{overflow-x:hidden;overflow-y:hidden}gridster.scrollVertical{overflow-x:hidden;overflow-y:auto}gridster.scrollHorizontal{overflow-x:auto;overflow-y:hidden}gridster.fixed{overflow:auto}gridster.mobile{overflow-x:hidden;overflow-y:auto}gridster.mobile gridster-item{position:relative}gridster.gridSize{height:initial;width:initial}gridster.gridSize.fit{height:100%;width:100%}gridster .gridster-column,gridster .gridster-row{position:absolute;display:none;transition:.3s;box-sizing:border-box}gridster.display-grid .gridster-column,gridster.display-grid .gridster-row{display:block}gridster .gridster-column{border-left:1px solid white;border-right:1px solid white}gridster .gridster-row{border-top:1px solid white;border-bottom:1px solid white}\n"] }]
-        }], ctorParameters: function () { return [{ type: i0.ElementRef, decorators: [{
-                    type: Inject,
-                    args: [ElementRef]
-                }] }, { type: i0.Renderer2, decorators: [{
-                    type: Inject,
-                    args: [Renderer2]
-                }] }, { type: i0.ChangeDetectorRef, decorators: [{
-                    type: Inject,
-                    args: [ChangeDetectorRef]
-                }] }, { type: i0.NgZone, decorators: [{
-                    type: Inject,
-                    args: [NgZone]
-                }] }]; }, propDecorators: { options: [{
-                type: Input
-            }] } });
+i0.ɵɵngDeclareClassMetadata({
+    minVersion: "12.0.0", version: "16.0.0", ngImport: i0, type: GridsterComponent, decorators: [{
+        type: Component,
+        args: [{ selector: 'gridster', encapsulation: ViewEncapsulation.None, standalone: true, imports: [NgForOf, NgStyle, GridsterPreviewComponent], template: "<div\n  class=\"gridster-column\"\n  *ngFor=\"let column of gridColumns; let i = index;\"\n  [ngStyle]=\"gridRenderer.getGridColumnStyle(i)\"\n></div>\n<div\n  class=\"gridster-row\"\n  *ngFor=\"let row of gridRows; let i = index;\"\n  [ngStyle]=\"gridRenderer.getGridRowStyle(i)\"\n></div>\n<ng-content></ng-content>\n<gridster-preview\n  [gridRenderer]=\"gridRenderer\"\n  [previewStyle$]=\"previewStyle$\"\n  class=\"gridster-preview\"\n></gridster-preview>\n", styles: ["gridster{position:relative;box-sizing:border-box;background:grey;width:100%;height:100%;-webkit-user-select:none;user-select:none;display:block}gridster.fit{overflow-x:hidden;overflow-y:hidden}gridster.scrollVertical{overflow-x:hidden;overflow-y:auto}gridster.scrollHorizontal{overflow-x:auto;overflow-y:hidden}gridster.fixed{overflow:auto}gridster.mobile{overflow-x:hidden;overflow-y:auto}gridster.mobile gridster-item{position:relative}gridster.gridSize{height:initial;width:initial}gridster.gridSize.fit{height:100%;width:100%}gridster .gridster-column,gridster .gridster-row{position:absolute;display:none;transition:.3s;box-sizing:border-box}gridster.display-grid .gridster-column,gridster.display-grid .gridster-row{display:block}gridster .gridster-column{border-left:1px solid white;border-right:1px solid white}gridster .gridster-row{border-top:1px solid white;border-bottom:1px solid white}\n"] }]
+    }], ctorParameters: function () {
+        return [{
+            type: i0.ElementRef, decorators: [{
+                type: Inject,
+                args: [ElementRef]
+            }]
+        }, {
+            type: i0.Renderer2, decorators: [{
+                type: Inject,
+                args: [Renderer2]
+            }]
+        }, {
+            type: i0.ChangeDetectorRef, decorators: [{
+                type: Inject,
+                args: [ChangeDetectorRef]
+            }]
+        }, {
+            type: i0.NgZone, decorators: [{
+                type: Inject,
+                args: [NgZone]
+            }]
+        }];
+    }, propDecorators: {
+        options: [{
+            type: Input
+        }]
+    }
+});
 
 class GridsterPush {
     constructor(gridsterItem) {
@@ -2105,8 +2126,8 @@ class GridsterDraggable {
                 // prevent moving up at the top of gridster
                 if (directions.includes(Direction.UP) &&
                     this.gridsterItem.el.getBoundingClientRect().top <
-                        this.gridster.el.getBoundingClientRect().top +
-                            (this.outerMarginTop ?? this.margin)) {
+                    this.gridster.el.getBoundingClientRect().top +
+                    (this.outerMarginTop ?? this.margin)) {
                     directions = directions.filter(direction => direction != Direction.UP);
                     e = new MouseEvent(e.type, {
                         clientX: e.clientX,
@@ -2116,8 +2137,8 @@ class GridsterDraggable {
                 // prevent moving left at the leftmost column of gridster
                 if (directions.includes(Direction.LEFT) &&
                     this.gridsterItem.el.getBoundingClientRect().left <
-                        this.gridster.el.getBoundingClientRect().left +
-                            (this.outerMarginLeft ?? this.margin)) {
+                    this.gridster.el.getBoundingClientRect().left +
+                    (this.outerMarginLeft ?? this.margin)) {
                     directions = directions.filter(direction => direction != Direction.LEFT);
                     e = new MouseEvent(e.type, {
                         clientX: this.lastMouse.clientX,
@@ -2127,8 +2148,8 @@ class GridsterDraggable {
                 // prevent moving right at the rightmost column of gridster
                 if (directions.includes(Direction.RIGHT) &&
                     this.gridsterItem.el.getBoundingClientRect().right >
-                        this.gridster.el.getBoundingClientRect().right -
-                            (this.outerMarginRight ?? this.margin)) {
+                    this.gridster.el.getBoundingClientRect().right -
+                    (this.outerMarginRight ?? this.margin)) {
                     directions = directions.filter(direction => direction != Direction.RIGHT);
                     e = new MouseEvent(e.type, {
                         clientX: this.lastMouse.clientX,
@@ -2138,8 +2159,8 @@ class GridsterDraggable {
                 // prevent moving down at the bottom of gridster
                 if (directions.includes(Direction.DOWN) &&
                     this.gridsterItem.el.getBoundingClientRect().bottom >
-                        this.gridster.el.getBoundingClientRect().bottom -
-                            (this.outerMarginBottom ?? this.margin)) {
+                    this.gridster.el.getBoundingClientRect().bottom -
+                    (this.outerMarginBottom ?? this.margin)) {
                     directions = directions.filter(direction => direction != Direction.DOWN);
                     e = new MouseEvent(e.type, {
                         clientX: e.clientX,
@@ -2359,22 +2380,22 @@ class GridsterDraggable {
         if (this.gridster.$options.dirType === DirTypes.RTL) {
             this.left =
                 this.gridster.el.scrollWidth -
-                    this.originalClientX +
-                    (e.clientX - this.originalClientX) / scale +
-                    this.diffLeft;
+                this.originalClientX +
+                (e.clientX - this.originalClientX) / scale +
+                this.diffLeft;
         }
         else {
             this.left =
                 this.originalClientX +
-                    (e.clientX - this.originalClientX) / scale +
-                    this.offsetLeft -
-                    this.diffLeft;
+                (e.clientX - this.originalClientX) / scale +
+                this.offsetLeft -
+                this.diffLeft;
         }
         this.top =
             this.originalClientY +
-                (e.clientY - this.originalClientY) / scale +
-                this.offsetTop -
-                this.diffTop;
+            (e.clientY - this.originalClientY) / scale +
+            this.offsetTop -
+            this.diffTop;
     }
     calculateItemPositionWithoutScale(e) {
         if (this.gridster.$options.dirType === DirTypes.RTL) {
@@ -3368,30 +3389,42 @@ class GridsterItemComponent {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.0.0", ngImport: i0, type: GridsterItemComponent, deps: [{ token: ElementRef }, { token: GridsterComponent }, { token: Renderer2 }, { token: NgZone }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "16.0.0", type: GridsterItemComponent, isStandalone: true, selector: "gridster-item", inputs: { item: "item" }, outputs: { itemInit: "itemInit", itemChange: "itemChange", itemResize: "itemResize" }, host: { properties: { "style.z-index": "this.zIndex" } }, usesOnChanges: true, ngImport: i0, template: "<ng-content></ng-content>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.s && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-s\"\n></div>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.e && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-e\"\n></div>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.n && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-n\"\n></div>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.w && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-w\"\n></div>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.se && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-se\"\n></div>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.ne && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-ne\"\n></div>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.sw && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-sw\"\n></div>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.nw && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-nw\"\n></div>\n", styles: ["gridster-item{box-sizing:border-box;z-index:1;position:absolute;overflow:hidden;transition:.3s;display:none;background:white;-webkit-user-select:text;user-select:text}gridster-item.gridster-item-moving{cursor:move}gridster-item.gridster-item-resizing,gridster-item.gridster-item-moving{transition:0s;z-index:2;box-shadow:0 0 5px 5px #0003,0 6px 10px #00000024,0 1px 18px #0000001f}.gridster-item-resizable-handler{position:absolute;z-index:2}.gridster-item-resizable-handler.handle-n{cursor:ns-resize;height:10px;right:0;top:0;left:0}.gridster-item-resizable-handler.handle-e{cursor:ew-resize;width:10px;bottom:0;right:0;top:0}.gridster-item-resizable-handler.handle-s{cursor:ns-resize;height:10px;right:0;bottom:0;left:0}.gridster-item-resizable-handler.handle-w{cursor:ew-resize;width:10px;left:0;top:0;bottom:0}.gridster-item-resizable-handler.handle-ne{cursor:ne-resize;width:10px;height:10px;right:0;top:0}.gridster-item-resizable-handler.handle-nw{cursor:nw-resize;width:10px;height:10px;left:0;top:0}.gridster-item-resizable-handler.handle-se{cursor:se-resize;width:0;height:0;right:0;bottom:0;border-style:solid;border-width:0 0 10px 10px;border-color:transparent}.gridster-item-resizable-handler.handle-sw{cursor:sw-resize;width:10px;height:10px;left:0;bottom:0}gridster-item:hover .gridster-item-resizable-handler.handle-se{border-color:transparent transparent #ccc}\n"], dependencies: [{ kind: "directive", type: NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }], encapsulation: i0.ViewEncapsulation.None }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.0.0", ngImport: i0, type: GridsterItemComponent, decorators: [{
-            type: Component,
-            args: [{ selector: 'gridster-item', encapsulation: ViewEncapsulation.None, standalone: true, imports: [NgIf], template: "<ng-content></ng-content>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.s && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-s\"\n></div>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.e && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-e\"\n></div>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.n && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-n\"\n></div>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.w && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-w\"\n></div>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.se && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-se\"\n></div>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.ne && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-ne\"\n></div>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.sw && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-sw\"\n></div>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.nw && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-nw\"\n></div>\n", styles: ["gridster-item{box-sizing:border-box;z-index:1;position:absolute;overflow:hidden;transition:.3s;display:none;background:white;-webkit-user-select:text;user-select:text}gridster-item.gridster-item-moving{cursor:move}gridster-item.gridster-item-resizing,gridster-item.gridster-item-moving{transition:0s;z-index:2;box-shadow:0 0 5px 5px #0003,0 6px 10px #00000024,0 1px 18px #0000001f}.gridster-item-resizable-handler{position:absolute;z-index:2}.gridster-item-resizable-handler.handle-n{cursor:ns-resize;height:10px;right:0;top:0;left:0}.gridster-item-resizable-handler.handle-e{cursor:ew-resize;width:10px;bottom:0;right:0;top:0}.gridster-item-resizable-handler.handle-s{cursor:ns-resize;height:10px;right:0;bottom:0;left:0}.gridster-item-resizable-handler.handle-w{cursor:ew-resize;width:10px;left:0;top:0;bottom:0}.gridster-item-resizable-handler.handle-ne{cursor:ne-resize;width:10px;height:10px;right:0;top:0}.gridster-item-resizable-handler.handle-nw{cursor:nw-resize;width:10px;height:10px;left:0;top:0}.gridster-item-resizable-handler.handle-se{cursor:se-resize;width:0;height:0;right:0;bottom:0;border-style:solid;border-width:0 0 10px 10px;border-color:transparent}.gridster-item-resizable-handler.handle-sw{cursor:sw-resize;width:10px;height:10px;left:0;bottom:0}gridster-item:hover .gridster-item-resizable-handler.handle-se{border-color:transparent transparent #ccc}\n"] }]
-        }], ctorParameters: function () { return [{ type: i0.ElementRef, decorators: [{
-                    type: Inject,
-                    args: [ElementRef]
-                }] }, { type: GridsterComponent }, { type: i0.Renderer2, decorators: [{
-                    type: Inject,
-                    args: [Renderer2]
-                }] }, { type: i0.NgZone, decorators: [{
-                    type: Inject,
-                    args: [NgZone]
-                }] }]; }, propDecorators: { item: [{
-                type: Input
-            }], itemInit: [{
-                type: Output
-            }], itemChange: [{
-                type: Output
-            }], itemResize: [{
-                type: Output
-            }], zIndex: [{
-                type: HostBinding,
-                args: ['style.z-index']
-            }] } });
+i0.ɵɵngDeclareClassMetadata({
+    minVersion: "12.0.0", version: "16.0.0", ngImport: i0, type: GridsterItemComponent, decorators: [{
+        type: Component,
+        args: [{ selector: 'gridster-item', encapsulation: ViewEncapsulation.None, standalone: true, imports: [NgIf], template: "<ng-content></ng-content>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.s && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-s\"\n></div>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.e && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-e\"\n></div>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.n && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-n\"\n></div>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.w && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-w\"\n></div>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.se && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-se\"\n></div>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.ne && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-ne\"\n></div>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.sw && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-sw\"\n></div>\n<div\n  (mousedown)=\"resize.dragStartDelay($event)\"\n  (touchstart)=\"resize.dragStartDelay($event)\"\n  *ngIf=\"resize.resizableHandles?.nw && resize.resizeEnabled\"\n  class=\"gridster-item-resizable-handler handle-nw\"\n></div>\n", styles: ["gridster-item{box-sizing:border-box;z-index:1;position:absolute;overflow:hidden;transition:.3s;display:none;background:white;-webkit-user-select:text;user-select:text}gridster-item.gridster-item-moving{cursor:move}gridster-item.gridster-item-resizing,gridster-item.gridster-item-moving{transition:0s;z-index:2;box-shadow:0 0 5px 5px #0003,0 6px 10px #00000024,0 1px 18px #0000001f}.gridster-item-resizable-handler{position:absolute;z-index:2}.gridster-item-resizable-handler.handle-n{cursor:ns-resize;height:10px;right:0;top:0;left:0}.gridster-item-resizable-handler.handle-e{cursor:ew-resize;width:10px;bottom:0;right:0;top:0}.gridster-item-resizable-handler.handle-s{cursor:ns-resize;height:10px;right:0;bottom:0;left:0}.gridster-item-resizable-handler.handle-w{cursor:ew-resize;width:10px;left:0;top:0;bottom:0}.gridster-item-resizable-handler.handle-ne{cursor:ne-resize;width:10px;height:10px;right:0;top:0}.gridster-item-resizable-handler.handle-nw{cursor:nw-resize;width:10px;height:10px;left:0;top:0}.gridster-item-resizable-handler.handle-se{cursor:se-resize;width:0;height:0;right:0;bottom:0;border-style:solid;border-width:0 0 10px 10px;border-color:transparent}.gridster-item-resizable-handler.handle-sw{cursor:sw-resize;width:10px;height:10px;left:0;bottom:0}gridster-item:hover .gridster-item-resizable-handler.handle-se{border-color:transparent transparent #ccc}\n"] }]
+    }], ctorParameters: function () {
+        return [{
+            type: i0.ElementRef, decorators: [{
+                type: Inject,
+                args: [ElementRef]
+            }]
+        }, { type: GridsterComponent }, {
+            type: i0.Renderer2, decorators: [{
+                type: Inject,
+                args: [Renderer2]
+            }]
+        }, {
+            type: i0.NgZone, decorators: [{
+                type: Inject,
+                args: [NgZone]
+            }]
+        }];
+    }, propDecorators: {
+        item: [{
+            type: Input
+        }], itemInit: [{
+            type: Output
+        }], itemChange: [{
+            type: Output
+        }], itemResize: [{
+            type: Output
+        }], zIndex: [{
+            type: HostBinding,
+            args: ['style.z-index']
+        }]
+    }
+});
 
 class GridsterItemComponentInterface {
 }
@@ -3404,13 +3437,15 @@ class GridsterModule {
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "16.0.0", ngImport: i0, type: GridsterModule, imports: [GridsterComponent, GridsterItemComponent], exports: [GridsterComponent, GridsterItemComponent] }); }
     static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "16.0.0", ngImport: i0, type: GridsterModule }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.0.0", ngImport: i0, type: GridsterModule, decorators: [{
-            type: NgModule,
-            args: [{
-                    imports: [GridsterComponent, GridsterItemComponent],
-                    exports: [GridsterComponent, GridsterItemComponent]
-                }]
-        }] });
+i0.ɵɵngDeclareClassMetadata({
+    minVersion: "12.0.0", version: "16.0.0", ngImport: i0, type: GridsterModule, decorators: [{
+        type: NgModule,
+        args: [{
+            imports: [GridsterComponent, GridsterItemComponent],
+            exports: [GridsterComponent, GridsterItemComponent]
+        }]
+    }]
+});
 
 /*
  * Public API Surface of gridster
